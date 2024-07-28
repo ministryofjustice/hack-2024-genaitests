@@ -13,18 +13,18 @@ import java.util.Map;
 @Component
 public class JiraClient {
     private static final String JIRA_URL = "${JIRA_URL}";
-    private static final String USER = "${JIRA_USER}";
-    private static final String TOKEN = "${JIRA_TOKEN}";
-    private static final String JQL = "${JIRA_JQL}";
+    private static final String JIRA_USER = "${JIRA_USER}";
+    private static final String JIRA_TOKEN = "${JIRA_TOKEN}";
+    private static final String JIRA_JQL = "${JIRA_JQL}";
 
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
     public JiraIssues getIssues() throws Exception {
-        var params = Map.of("jql", JQL);
+        var params = Map.of("jql", JIRA_JQL);
         //        "fields", "id,key,summary,description");
         return restTemplateBuilder
-                .basicAuthentication(USER, TOKEN)
+                .basicAuthentication(JIRA_USER, JIRA_TOKEN)
                 .rootUri(JIRA_URL)
                 .build()
                 .getForObject("/rest/api/3/search", JiraIssues.class);
