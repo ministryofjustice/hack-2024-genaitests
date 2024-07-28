@@ -68,9 +68,10 @@ chmod +x runmain
 
 ### Configuring the Python script
 
-At the start of `main.py`, edit the values of the variables `JIRA_URL`,
-`USER` and `TOKEN` for your Jira Cloud bot account (note that `TOKEN` is a
-revocable Jira API token, generated for the Jira Cloud user or project,
+Open the file `main.py` and edit the values of the variables `JIRA_URL`,
+`JIRA_USER` and `JIRA_TOKEN` so they point to a Jira Cloud workspace and bot
+account where issue queries and updates will be made (note that `JIRA_TOKEN`
+is a revocable Jira API token, generated for the Jira Cloud user or project,
 **not** the bot account's Jira Cloud password).
 
 Create a new free Jira Cloud workspace, and a dedicated email for the bot
