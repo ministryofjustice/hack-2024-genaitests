@@ -5,10 +5,10 @@ import requests
 import sys
 
 JIRA_URL="${JIRA_URL}"
-USER="${JIRA_USER}"
-TOKEN="${JIRA_TOKEN}"
+JIRA_USER="${JIRA_USER}"
+JIRA_TOKEN="${JIRA_TOKEN}"
 
-SCENARIO_URL="http://localhost:8080/scenario"
+GENAPI_URL="http://localhost:8080/scenario"
 
 # Defines a function for connecting to Jira
 def connect_jira(log):
@@ -16,17 +16,17 @@ def connect_jira(log):
     Connect to JIRA.
     '''
     log.info("Connecting to JIRA: %s" % JIRA_URL)
-    jira = Jira(url=JIRA_URL, username=USER, password=TOKEN, cloud=True)
+    jira = Jira(url=JIRA_URL, username=JIRA_USER, password=JIRA_TOKEN, cloud=True)
     return jira
 
 # Separate scenarios with an extra blank line
 def add_blank_lines(input):
-    x = []
-    for item in input:
-        if item.startswith('Scenario:') and len(x) > 0:
-            x.append("")
-        x.append(item)
-    return x
+    output = []
+    for line in input:
+        if (line.startswith('Scenario:') or line.startswith('Feature:')) and len(output) > 0:
+            output.append("")
+        output.append(line)
+    return output
 
 # create logger
 log = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ if 'fields' in issue:
     reqs = desc.split('\n')
     reqs_compressed = filter((lambda x: len(x) != 0), reqs)
 
-    response = requests.post(SCENARIO_URL, json={"requirements": list(reqs_compressed)})
+    response = requests.post(GENAPI_URL, json={"requirements": list(reqs_compressed)})
 
     scenarios = response.json()["scenarios"]
     scenarios_separated = add_blank_lines(scenarios)
